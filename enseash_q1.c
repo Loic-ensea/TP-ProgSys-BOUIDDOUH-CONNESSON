@@ -10,7 +10,7 @@ static const char welcome[] =
 static const char prompt[] = "enseash % \n";
 
 int main(void) {
-    write(STDOUT_FILENO, welcome, strnlen(welcome,MAX_STR_LEN));
-    write(STDOUT_FILENO, prompt,  strnlen(prompt,MAX_STR_LEN));
+    write(STDOUT_FILENO, welcome, strlen(welcome));
+    write(STDOUT_FILENO, prompt,  strlen(prompt));
     return 0;
 }
