@@ -20,5 +20,5 @@ int main(void)
     {
         buf[n - 1] = '\0';
     }
-    write(STDOUT_FILENO, prompt,  strnlen(prompt,MAX_STR_LEN))
+    write(STDOUT_FILENO, prompt,  strnlen(prompt,MAX_STR_LEN));
 }
