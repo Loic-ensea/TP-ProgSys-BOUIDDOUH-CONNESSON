@@ -4,7 +4,7 @@
 static const char welcome[] =
     "Bienvenue dans le Shell ENSEA.\n"
     "Pour quitter, tapez 'exit'.\n";
-static const char prompt[] = "enseash % ";
+static const char prompt[] = "enseash % \n";
 
 int main(void) {
     write(STDOUT_FILENO, welcome, sizeof(welcome)-1);
