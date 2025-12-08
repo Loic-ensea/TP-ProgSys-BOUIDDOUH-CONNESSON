@@ -7,10 +7,10 @@
 
 int main(void) 
 {
-    static const char welcome[] =
+    char *welcome[] =
     "Bienvenue dans le Shell ENSEA.\n"
     "Pour quitter, tapez 'exit'.\n";
-    static const char prompt[] = "enseash % \n";
+    char *prompt[] = "enseash % \n";
     
     ssize_t n;
     char buf[BUFSIZE]
