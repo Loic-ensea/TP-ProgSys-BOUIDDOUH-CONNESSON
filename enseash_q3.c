@@ -45,7 +45,7 @@ int main(void)
         }
 
         // Gestion de la commande "exit"
-        if (strcmp(cmd_line, "exit") == 0)
+        if (strcmp(cmd_line, "exit\n") == 0)
         {
             print_str(bye);
             break;
