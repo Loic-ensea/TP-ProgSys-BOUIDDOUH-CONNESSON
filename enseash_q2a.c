@@ -2,9 +2,16 @@
 #include <string.h>
 
 #define BUFSIZE 128
+#define MAX_STR_LEN 1024
+
 
 int main(void) 
 {
+    static const char welcome[] =
+    "Bienvenue dans le Shell ENSEA.\n"
+    "Pour quitter, tapez 'exit'.\n";
+    static const char prompt[] = "enseash % \n";
+    
     ssize_t n;
     char buf[BUFSIZE]
 
@@ -13,5 +20,5 @@ int main(void)
     {
         buf[n - 1] = '\0';
     }
-    write
+    write(STDOUT_FILENO, prompt,  strnlen(prompt,MAX_STR_LEN))
 }
