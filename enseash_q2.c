@@ -17,7 +17,7 @@ int main(void)
 {
     const char *welcome =
         "Bienvenue dans le Shell ENSEA.\n"
-        "Pour quitter, vous pouvez faire Ctrl+D (pour l'instant).\n";
+        "Pour quitter, tapez 'exit'.\n";
     const char *prompt = "enseash % ";
     
     char cmd_line[MAX_CMD_LEN];
@@ -32,11 +32,7 @@ int main(void)
 
         print_str(prompt);
 
-        n = read(STDIN_FILENO, cmd_line, MAX_CMD_LEN - 1);
-        if (n <= 0) 
-        {
-            break;
-        }
+        n = read(STDIN_FILENO, cmd_line, MAX_CMD_LEN);
 
         cmd_line[n] = '\0';
 
