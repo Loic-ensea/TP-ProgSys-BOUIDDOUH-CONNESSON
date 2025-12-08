@@ -2,7 +2,7 @@
 #include <string.h>
 
 #define BUFSIZE 128
-#define MAX_STR_LEN 1024
+
 
 static const char welcome[] =
     "Bienvenue dans le Shell ENSEA.\n"
