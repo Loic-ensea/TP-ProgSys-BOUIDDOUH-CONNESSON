@@ -1,6 +1,3 @@
-// enseash_q6.c
-// Shell ENSEA – Q6 : commandes avec arguments + exit/sign + temps en ms
-
 #define _POSIX_C_SOURCE 199309L
 
 #include <unistd.h>
@@ -30,9 +27,9 @@ int main(void)
     char cmd_line[MAX_CMD_LEN];
     char prompt[MAX_PROMPT_LEN];
 
-    int  last_status  = 0;   // status de la dernière commande
-    int  has_status   = 0;   // = 0 tant qu’aucune commande n’a été exécutée
-    long last_time_ms = 0;   // temps de la dernière commande en ms
+    int last_status = 0;   
+    int has_status  = 0;  
+    long duration_ms = 0;
 
     print_str(welcome);
 
@@ -41,52 +38,52 @@ int main(void)
         ssize_t n;
         pid_t pid;
 
-        // Construire le prompt
-        if (!has_status) {
+        
+        if (!has_status) 
+        {
             sprintf(prompt, "enseash %% ");
-        } else {
-            if (WIFEXITED(last_status)) {
+        } else 
+        {
+            if (WIFEXITED(last_status)) 
+            {
                 int code = WEXITSTATUS(last_status);
-                sprintf(prompt, "enseash [exit:%d|%ldms] %% ", code, last_time_ms);
-            } else if (WIFSIGNALED(last_status)) {
+                sprintf(prompt, "enseash [exit:%d|%ldms] %% ", code, duration_ms);
+            } else if (WIFSIGNALED(last_status)) 
+            {
                 int sig = WTERMSIG(last_status);
-                sprintf(prompt, "enseash [sign:%d|%ldms] %% ", sig, last_time_ms);
-            } else {
-                sprintf(prompt, "enseash %% ");
+                sprintf(prompt, "enseash [sign:%d|%ldms] %% ", sig, duration_ms);
             }
         }
 
         print_str(prompt);
 
-        // Lire la ligne
-        n = read(STDIN_FILENO, cmd_line, MAX_CMD_LEN - 1);
-        if (n <= 0) {               // Ctrl+D ou erreur
+        // Lecture de la commande
+        n = read(STDIN_FILENO, cmd_line, MAX_CMD_LEN);
+
+        // Gestion de Ctrl+D (EOF) ou erreur de lecture
+        if (n <= 0) {
             print_str(bye);
             break;
         }
 
-        if (n >= MAX_CMD_LEN) {     // sécurité
-            n = MAX_CMD_LEN - 1;
-        }
         cmd_line[n] = '\0';
 
-        // Enlever le '\n' final
+        // Enlever le '\n' final s'il existe
         if (n > 0 && cmd_line[n - 1] == '\n') {
             cmd_line[n - 1] = '\0';
         }
 
-        // Ligne vide
+        
         if (cmd_line[0] == '\0') {
             continue;
         }
 
-        // Commande interne exit
+        // Commande interne "exit"
         if (strcmp(cmd_line, "exit") == 0) {
             print_str(bye);
             break;
         }
 
-        // Découpage en mots (commande + arguments)
         char *argv[MAX_ARGS];
         int   argc = 0;
         char *token = strtok(cmd_line, " ");
@@ -97,42 +94,42 @@ int main(void)
         }
         argv[argc] = NULL;
 
-        if (argc == 0) {
-            continue;
-        }
-
-        // Mesure du temps avant exécution
+        
         struct timespec t_start, t_end;
-        clock_gettime(CLOCK_MONOTONIC, &t_start);
+        clock_gettime(CLOCK_REALTIME, &t_start);
 
+
+        // Création du processus fils pour exécuter la commande
         pid = fork();
 
         if (pid == 0) {
-            // --- Fils ---
+            // Processus fils
+
             execvp(argv[0], argv);
 
-            // Si on arrive ici, execvp a échoué : on affiche pourquoi
-            perror("execvp");
+            // Si on arrive ici, execvp a échoué
             _exit(1);
         }
         else if (pid > 0) {
-            // --- Père ---
+            // Processus père
+            
             waitpid(pid, &last_status, 0);
 
-            clock_gettime(CLOCK_MONOTONIC, &t_end);
+            clock_gettime(CLOCK_REALTIME, &t_end);
 
-            long sec  = t_end.tv_sec  - t_start.tv_sec;
-            long nsec = t_end.tv_nsec - t_start.tv_nsec;
-            last_time_ms = sec * 1000 + nsec / 1000000;
-            if (last_time_ms < 0) last_time_ms = 0;
+            long sec_diff  = t_end.tv_sec  - t_start.tv_sec;
+            long nsec_diff = t_end.tv_nsec - t_start.tv_nsec;
+            duration_ms = sec_diff * 1000 + nsec_diff / 1000000;
 
             has_status = 1;
         }
         else {
+            
             print_str("Erreur : fork a échoué.\n");
         }
     }
 
     return 0;
 }
+
 
