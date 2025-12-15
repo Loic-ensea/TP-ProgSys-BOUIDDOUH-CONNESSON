@@ -95,7 +95,17 @@ int main(void)
             argc++;
             token = strtok(NULL, " ");
         }
-        //argv[argc] = NULL;
+        argv[argc] = NULL;
+
+        printf("DEBUG argv :\n");
+        int i = 0;
+        while (argv[i] != NULL) {
+            printf("  argv[%d] = '%s'\n", i, argv[i]);
+            i++;
+        }
+        printf("  argv[%d] = NULL\n", i);
+        fflush(stdout);
+
 
         
         struct timespec t_start, t_end;
