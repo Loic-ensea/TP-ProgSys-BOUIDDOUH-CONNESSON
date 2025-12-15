@@ -130,6 +130,14 @@ Dans les deux cas (`exit` ou `Ctrl + D`), le message `Bye bye...` est affiché a
 - `long last_time_ms;`  
 qui représente le temps de la dernière commande en millisecondes.
 
+## `enseash_q6.c` – Commandes avec arguments + code de retour + temps d’exécution
+
+### Comportement
+
+- Pour permettre des commandes comme ls -l ou hostname -i, la ligne est découpée en mots avec strtok (en identifiant les espaces).
+- On stocke dans un tableau le nom de la fonction (ex : ls ; hostname), son ou ses arguments séparés par des espaces (ex : -l ; -i) et on termine ce tableau par un NULL (obligatoire pour execvp).
+- On transmet ensuite dans le processus fils à execvp ce tableau d'arguments.
+
 
 
 
