@@ -84,18 +84,7 @@ int main(void)
             break;
         }
 
-        char *argv[MAX_ARGS];
-        int   argc = 0;
-        char *token;
-
-        token = strtok(cmd_line, " ");
-
-        while (token != NULL && argc < (MAX_ARGS - 1)) {
-            argv[argc] = token;
-            argc++;
-            token = strtok(NULL, " ");
-        }
-        argv[argc] = NULL;
+        
 
         
         struct timespec t_start, t_end;
@@ -108,7 +97,7 @@ int main(void)
         if (pid == 0) {
             // Processus fils
 
-            execvp(argv[0], argv);
+            execl("/bin/sh", "sh", "-c", cmd_line, (char *)NULL);
 
             // Si on arrive ici, execvp a échoué
             _exit(1);
