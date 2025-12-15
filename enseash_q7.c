@@ -6,6 +6,7 @@
 #include <sys/wait.h>
 #include <stdio.h>
 #include <time.h>
+#include <fcntl.h>
 
 #define MAX_CMD_LEN    128
 #define MAX_PROMPT_LEN 64
