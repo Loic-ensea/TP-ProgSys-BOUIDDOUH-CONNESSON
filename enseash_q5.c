@@ -26,6 +26,7 @@ int main(void)
 
     int last_status = 0;   
     int has_status  = 0;  
+    long duration_ms = 0;
 
     print_str(welcome);
 
@@ -109,7 +110,7 @@ int main(void)
 
             long sec_diff  = t_end.tv_sec  - t_start.tv_sec;
             long nsec_diff = t_end.tv_nsec - t_start.tv_nsec;
-            long duration_ms = sec_diff * 1000 + nsec_diff / 1000000;
+            duration_ms = sec_diff * 1000 + nsec_diff / 1000000;
 
             has_status = 1;
         }
