@@ -108,7 +108,7 @@ int main(void)
         if (pid == 0) {
             // Processus fils
 
-            execvp(argv[0], argv);
+            execvp(argv[0], argv[1]);
 
             // Si on arrive ici, execvp a échoué
             _exit(1);
