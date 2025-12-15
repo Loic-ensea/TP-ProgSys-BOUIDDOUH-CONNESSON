@@ -95,7 +95,7 @@ int main(void)
             argc++;
             token = strtok(NULL, " ");
         }
-        argv[argc] = NULL;
+        //argv[argc] = NULL;
 
         
         struct timespec t_start, t_end;
