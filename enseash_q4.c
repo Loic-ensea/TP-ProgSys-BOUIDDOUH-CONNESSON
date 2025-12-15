@@ -52,10 +52,10 @@ int main(void)
 
         print_str(prompt);
 
-        // Lecture de la commande
+        // Read commands
         n = read(STDIN_FILENO, cmd_line, MAX_CMD_LEN);
 
-        // Gestion de Ctrl+D (EOF) ou erreur de lecture
+        //Ctrl+D (EOF) or read error management
         if (n <= 0) {
             print_str(bye);
             break;
@@ -64,7 +64,7 @@ int main(void)
        
         cmd_line[n] = '\0';
 
-        // Enlever le '\n' final s'il existe
+        //Remove final '\n' final if it exists
         if (n > 0 && cmd_line[n - 1] == '\n') {
             cmd_line[n - 1] = '\0';
         }
@@ -74,28 +74,28 @@ int main(void)
             continue;
         }
 
-        // Commande interne "exit"
+        // Intern command "exit"
         if (strcmp(cmd_line, "exit") == 0) {
             print_str(bye);
             break;
         }
 
-        // Création du processus fils pour exécuter la commande
+        // Creating the child process to execute the command
         pid = fork();
 
         if (pid == 0) {
-            // Processus fils
+            // Child process
             char *argv[2];
             argv[0] = cmd_line;  
             argv[1] = NULL;
 
             execvp(argv[0], argv);
 
-            // Si on arrive ici, execvp a échoué
+            // execvp failed if we reach here
             _exit(1);
         }
         else if (pid > 0) {
-            // Processus père
+            // Father process
             
             waitpid(pid, &last_status, 0);
             has_status = 1;
