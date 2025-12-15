@@ -108,7 +108,6 @@ int main(void)
             execvp(argv[0], argv);
 
             // Si on arrive ici, execvp a échoué
-            perror("execvp");
             _exit(1);
         }
         else if (pid > 0) {
