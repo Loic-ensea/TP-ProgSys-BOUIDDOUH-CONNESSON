@@ -138,6 +138,16 @@ qui représente le temps de la dernière commande en millisecondes.
 - On stocke dans un tableau le nom de la fonction (ex : ls ; hostname), son ou ses arguments séparés par des espaces (ex : -l ; -i) et on termine ce tableau par un NULL (obligatoire pour execvp).
 - On transmet ensuite dans le processus fils à execvp ce tableau d'arguments.
 
+## `enseash_q7.c` – Gestion des redirections `<` et `>`
+
+### Comportement
+
+- On repart du shell de la question 6, et on commence par ajouter les variables : char *input_file = NULL; (fichier après <)  et char *output_file = NULL; (fichier après >).
+- On utilise strcmp pour identifier les potentiels fichiers après les symboles > ou <.
+- Ainsi, < et > et les noms de fichiers associés ne sont pas laissés dans argv, ce qui permet d’appeler execvp uniquement avec la commande et ses arguments. (Nous avions supposé qu'il y a toujours des espaces autour des symboles < et >).
+- Dans le processus fils, juste avant `execvp`, on applique les redirections si nécessaire :  
+  - si `input_file` n’est pas `NULL`, on ouvre le fichier en lecture avec `open(input_file, O_RDONLY)`, puis on le duplique sur l’entrée standard avec `dup2(fd_in, STDIN_FILENO)` et on ferme avec `fd_in` ;  
+  - si `output_file` n’est pas `NULL`, on ouvre/crée le fichier en écriture avec `open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644)`, puis on le duplique sur la sortie standard avec `dup2(fd_out, STDOUT_FILENO)` et on ferme `fd_out`.
 
 
 
