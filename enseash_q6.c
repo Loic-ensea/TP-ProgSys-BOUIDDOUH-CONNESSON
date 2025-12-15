@@ -97,6 +97,17 @@ int main(void)
         }
         argv[argc] = NULL;
 
+        print_str("DEBUG argv :\n");
+       int i = 0;
+       while (argv[i] != NULL) {
+           print_str("  '");
+           print_str(argv[i]);
+           print_str("'\n");
+           i++;
+       }
+       print_str("  (NULL)\n");
+
+
 
         struct timespec t_start, t_end;
         clock_gettime(CLOCK_REALTIME, &t_start);
