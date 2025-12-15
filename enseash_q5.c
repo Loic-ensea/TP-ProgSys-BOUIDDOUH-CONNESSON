@@ -84,7 +84,7 @@ int main(void)
 
         
         struct timespec t_start, t_end;
-        clock_gettime(CLOCK_MONOTONIC, &t_start);
+        clock_gettime(CLOCK_REALTIME, &t_start);
 
 
         // Création du processus fils pour exécuter la commande
@@ -106,7 +106,7 @@ int main(void)
             
             waitpid(pid, &last_status, 0);
 
-            clock_gettime(CLOCK_MONOTONIC, &t_end);
+            clock_gettime(CLOCK_REALTIME, &t_end);
 
             long sec_diff  = t_end.tv_sec  - t_start.tv_sec;
             long nsec_diff = t_end.tv_nsec - t_start.tv_nsec;
