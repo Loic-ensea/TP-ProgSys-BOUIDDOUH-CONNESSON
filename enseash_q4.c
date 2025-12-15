@@ -1,6 +1,3 @@
-// enseash_q4.c
-// Affichage du code de retour (ou du signal) de la commande précédente dans le prompt
-
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
@@ -26,8 +23,8 @@ int main(void)
     char cmd_line[MAX_CMD_LEN];
     char prompt[MAX_PROMPT_LEN];
 
-    int last_status = 0;   // status de la dernière commande
-    int has_status  = 0;   // indique si une commande a déjà été exécutée
+    int last_status = 0;   
+    int has_status  = 0;   
 
     print_str(welcome);
 
@@ -36,7 +33,7 @@ int main(void)
         ssize_t n;
         pid_t pid;
 
-        // Construction du prompt en fonction du dernier status
+        
         if (!has_status) 
         {
             sprintf(prompt, "enseash %% ");
@@ -72,7 +69,7 @@ int main(void)
             cmd_line[n - 1] = '\0';
         }
 
-        // Ligne vide : on réaffiche juste le prompt au prochain tour
+        
         if (cmd_line[0] == '\0') {
             continue;
         }
@@ -99,12 +96,12 @@ int main(void)
         }
         else if (pid > 0) {
             // Processus père
-            // On attend la fin du fils et on met à jour last_status
+            
             waitpid(pid, &last_status, 0);
             has_status = 1;
         }
         else {
-            // fork a échoué
+            
             print_str("Erreur : fork a échoué.\n");
         }
     }
