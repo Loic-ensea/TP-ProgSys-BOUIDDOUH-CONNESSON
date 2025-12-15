@@ -58,10 +58,10 @@ int main(void)
 
         print_str(prompt);
 
-        // Lecture de la commande
+        // Read commands
         n = read(STDIN_FILENO, cmd_line, MAX_CMD_LEN);
 
-        // Gestion de Ctrl+D (EOF) ou erreur de lecture
+        // Ctrl+D handling (EOF) or read error
         if (n <= 0) {
             print_str(bye);
             break;
@@ -69,7 +69,7 @@ int main(void)
 
         cmd_line[n] = '\0';
 
-        // Enlever le '\n' final s'il existe
+        // Remove the final '\n' if it exists
         if (n > 0 && cmd_line[n - 1] == '\n') {
             cmd_line[n - 1] = '\0';
         }
@@ -79,7 +79,7 @@ int main(void)
             continue;
         }
 
-        // Commande interne "exit"
+        // Internal command "exit"
         if (strcmp(cmd_line, "exit") == 0) {
             print_str(bye);
             break;
@@ -90,31 +90,31 @@ int main(void)
         char *argv[MAX_ARGS];
         int   argc = 0;
         char *token;
-        //Espaces autour de > ou <
-        char *input_file  = NULL;  // après '<'
-        char *output_file = NULL;  // après '>'
+        //Spaces around > or <
+        char *input_file  = NULL;  // after '<'
+        char *output_file = NULL;  // after '>'
 
         token = strtok(cmd_line, " ");
 
         while (token != NULL && argc < (MAX_ARGS - 1)) {
             if (strcmp(token, "<") == 0) {
-                // redirection d'entrée
+                // input redirection
                 token = strtok(NULL, " ");
                 if (token != NULL) {
                     input_file = token;
                 }
-                // on ne met pas '<' ni le nom de fichier dans argv
+                // We don't put '<' or the filename in argv
             }
             else if (strcmp(token, ">") == 0) {
-                // redirection de sortie
+                //input redirection
                 token = strtok(NULL, " ");
                 if (token != NULL) {
                     output_file = token;
                 }
-                // on ne met pas '>' ni le nom de fichier dans argv
+                // We don't put '>' or the filename in argv
             }
             else {
-                // argument normal
+                // regular argument 
                 argv[argc] = token;
                 argc++;
             }
@@ -123,7 +123,7 @@ int main(void)
         }
         argv[argc] = NULL;
 
-        // Si aucune commande après filtrage, on recommence
+        // If no order is found after filtering, we start again
         if (argc == 0) {
             continue;
         }
@@ -134,43 +134,43 @@ int main(void)
         clock_gettime(CLOCK_REALTIME, &t_start);
 
 
-        // Création du processus fils pour exécuter la commande
+        // Creating the child process to execute the command
         pid = fork();
 
         if (pid == 0) {
-            // ----- Processus fils -----
+            //Child process
 
-            // Redirection d'entrée si demandée
+            // Input redirection if requested
             if (input_file != NULL) {
                 int fd_in = open(input_file, O_RDONLY);
                 if (fd_in < 0) {
-                    _exit(1); // échec d'ouverture
+                    _exit(1); // opening failed
                 }
                 dup2(fd_in, STDIN_FILENO);
                 close(fd_in);
             }
 
-            // Redirection de sortie si demandée
+            // Exit redirection if requested
             if (output_file != NULL) {
                 int fd_out = open(output_file,
                                   O_WRONLY | O_CREAT | O_TRUNC,
                                   0644);
                 if (fd_out < 0) {
-                    _exit(1); // échec d'ouverture
+                    _exit(1); // opening failed
                 }
                 dup2(fd_out, STDOUT_FILENO);
                 close(fd_out);
             }
 
-            // Exécution de la commande avec ses arguments
+            // Executing the command with its arguments
             execvp(argv[0], argv);
 
-            // Si on arrive ici, execvp a échoué
+            // If we get here, execvp has failed
             _exit(1);
 
         }
         else if (pid > 0) {
-            // Processus père
+            //Father process
             
             waitpid(pid, &last_status, 0);
 
