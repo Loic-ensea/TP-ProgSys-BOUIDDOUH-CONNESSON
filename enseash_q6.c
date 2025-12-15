@@ -86,7 +86,9 @@ int main(void)
 
         char *argv[MAX_ARGS];
         int   argc = 0;
-        char *token = strtok(cmd_line, " ");
+        char *token;
+
+        token = strtok(cmd_line, " ");
 
         while (token != NULL && argc < (MAX_ARGS - 1)) {
             argv[argc] = token;
