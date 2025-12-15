@@ -92,3 +92,24 @@ Avec `enseash_q3.c`, le shell permet :
 
 Dans les deux cas (`exit` ou `Ctrl + D`), le message `Bye bye...` est affiché avant la fin du programme.
 
+## `enseash_q4.c` – Affichage du code de retour ou du signal dans le prompt
+
+### Résumé du code
+
+- Deux variables sont ajoutées :
+  - `int last_status = 0;` : contient le **status** de la dernière commande (valeur renvoyée par `waitpid`).
+  - `int has_status = 0;` : indique si au moins une commande a déjà été exécutée (au tout début on n’a pas de status à afficher).
+
+- Avant chaque lecture de commande, on **construit le prompt** dans un buffer `prompt` avec `sprintf` :
+
+### Comportement
+
+- Au lancement, comme aucune commande n’a encore été exécutée, le prompt est simple :
+  ```text
+  enseash %
+
+- Après une commande qui réussit (par exemple ls) => enseash [exit:0] %
+- Après une commande qui retourne un code d’erreur (par exemple false ou une commande invalide) => enseash [exit:1] %
+- Si la commande s’arrête à cause d’un signal (par exemple un SIGKILL) => enseash [sign:9] % 
+
+
