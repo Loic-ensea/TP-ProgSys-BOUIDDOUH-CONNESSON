@@ -64,11 +64,7 @@ int main(void)
             break;
         }
 
-        // Terminer la chaîne par '\0'
-        if (n >= MAX_CMD_LEN) {
-            // Sécurité : on tronque si jamais on lisait trop
-            n = MAX_CMD_LEN - 1;
-        }
+       
         cmd_line[n] = '\0';
 
         // Enlever le '\n' final s'il existe
