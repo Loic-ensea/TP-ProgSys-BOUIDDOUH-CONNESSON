@@ -56,7 +56,6 @@ int main(void)
         }
 
         print_str(prompt);
-        print_str("DEBUG argv :\n");
 
         // Lecture de la commande
         n = read(STDIN_FILENO, cmd_line, MAX_CMD_LEN);
@@ -97,17 +96,6 @@ int main(void)
             token = strtok(NULL, " ");
         }
         argv[argc] = NULL;
-
-        print_str("DEBUG argv :\n");
-        int i = 0;
-        while (argv[i] != NULL) {
-            print_str("  '");
-            print_str(argv[i]);
-            print_str("'\n");
-            i++;
-        }
-        print_str("  (NULL)\n");
-
 
 
         struct timespec t_start, t_end;
