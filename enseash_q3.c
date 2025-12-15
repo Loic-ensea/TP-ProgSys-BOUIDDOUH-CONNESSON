@@ -37,14 +37,14 @@ int main(void)
 
         cmd_line[n] = '\0';
 
-        //Gestion du CTRL+D 
+        //CTRL+D mangement
         if(n == 0)
         {
             print_str(bye);
             break;
         }
 
-        // Gestion de la commande "exit"
+        //"exit" command mangement
         if (strcmp(cmd_line, "exit\n") == 0)
         {
             print_str(bye);
