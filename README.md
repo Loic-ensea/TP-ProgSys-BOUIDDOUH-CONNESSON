@@ -123,7 +123,7 @@ Dans les deux cas (`exit` ou `Ctrl + D`), le message `Bye bye...` est affiché a
 
 - On calcule ensuite la durée en millisecondes en faisant la différence entre `t_end` et `t_start` :
 - différence en secondes : `sec = t_end.tv_sec - t_start.tv_sec`
-- différence en nanosecondes : `nsec = t_end.tv_nsec - t_start.tv_nsec`
+- différence en nanosecondes : `nsec = t_end.tv_nsec - t_start.tv_nsec` (pour plus de précision)
 - conversion en millisecondes : `time_ms = sec * 1000 + nsec / 1000000`
 
 - Cette durée est stockée dans une variable globale simple :
@@ -137,6 +137,7 @@ qui représente le temps de la dernière commande en millisecondes.
 - Pour permettre des commandes comme ls -l ou hostname -i, la ligne est découpée en mots avec strtok (en identifiant les espaces).
 - On stocke dans un tableau le nom de la fonction (ex : ls ; hostname), son ou ses arguments séparés par des espaces (ex : -l ; -i) et on termine ce tableau par un NULL (obligatoire pour execvp).
 - On transmet ensuite dans le processus fils à execvp ce tableau d'arguments.
+
 
 
 
