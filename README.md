@@ -110,6 +110,26 @@ Dans les deux cas (`exit` ou `Ctrl + D`), le message `Bye bye...` est affiché a
 
 - Après une commande qui réussit (par exemple ls) => enseash [exit:0] %
 - Après une commande qui retourne un code d’erreur (par exemple false ou une commande invalide) => enseash [exit:1] %
-- Si la commande s’arrête à cause d’un signal (par exemple un SIGKILL) => enseash [sign:9] % 
+- Si la commande s’arrête à cause d’un signal (par exemple un SIGKILL) => enseash [sign:9] %
+
+## `enseash_q5.c` – Affichage du code de retour **et** du temps d’exécution
+
+### Comportement
+
+- On utilise la fonction `clock_gettime` (définie dans `<time.h>`) pour récupérer des instants de temps avant et après l’exécution de la commande.
+- Deux variables de type `struct timespec` sont utilisées :
+- `t_start` : temps juste **avant** de lancer la commande (avant `fork` / `execvp`),
+- `t_end` : temps juste **après** la fin de la commande (après `waitpid`).
+
+- On calcule ensuite la durée en millisecondes en faisant la différence entre `t_end` et `t_start` :
+- différence en secondes : `sec = t_end.tv_sec - t_start.tv_sec`
+- différence en nanosecondes : `nsec = t_end.tv_nsec - t_start.tv_nsec`
+- conversion en millisecondes : `time_ms = sec * 1000 + nsec / 1000000`
+
+- Cette durée est stockée dans une variable globale simple :
+- `long last_time_ms;`  
+qui représente le temps de la dernière commande en millisecondes.
+
+
 
 
